@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Grading System</title>
+<style>
+    body {
+        font-family: "Poppins", sans-serif;
+        background: #f7f9fc;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 700px;
+        background: #fff;
+        margin: 50px auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    input {
+        padding: 10px;
+        flex: 1;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: center;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .grade-A { color: green; font-weight: bold; }
+    .grade-B { color: #007bff; font-weight: bold; }
+    .grade-C { color: orange; font-weight: bold; }
+    .grade-D { color: red; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>🎓 Student Grading System</h1>
+
+    <form id="gradeForm">
+        <input type="text" id="studentName" placeholder="Enter Student Name" required>
+        <input type="number" id="studentMarks" placeholder="Enter Marks (0-100)" min="0" max="100" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <table id="gradesTable">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Student Name</th>
+                <th>Marks</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Student data will appear here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    const form = document.getElementById('gradeForm');
+    const tableBody = document.querySelector('#gradesTable tbody');
+    let count = 0;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('studentName').value.trim();
+        const marks = parseFloat(document.getElementById('studentMarks').value);
+
+        if (name === '' || isNaN(marks) || marks < 0 || marks > 100) {
+            alert('Please enter valid name and marks between 0 and 100.');
+            return;
+        }
+
+        const grade = calculateGrade(marks);
+        count++;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${count}</td>
+            <td>${name}</td>
+            <td>${marks}</td>
+            <td class="grade-${grade.letter}">${grade.letter}</td>
+        `;
+        tableBody.appendChild(row);
+
+        form.reset();
+    });
+
+    function calculateGrade(marks) {
+        let letter;
+        if (marks >= 90) letter = 'A';
+        else if (marks >= 75) letter = 'B';
+        else if (marks >= 50) letter = 'C';
+        else letter = 'D';
+        return { letter };
+    }
+</script>
+</body>
+</html>
